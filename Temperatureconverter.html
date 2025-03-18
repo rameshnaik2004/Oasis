@@ -1,0 +1,116 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Temperature Converter</h1>
+      <input
+        type="number"
+        id="temperatureInput"
+        placeholder="Enter temperature"
+        required
+      />
+
+      <div>
+        <label>
+          <input type="radio" name="unit" value="Celsius" checked />Celsius
+        </label>
+        <label>
+          <input type="radio" name="unit" value="Fahrenheit" />Fahrenheit
+        </label>
+        <label> <input type="radio" name="unit" value="Kelvin" />Kelvin </label>
+      </div>
+
+      <button id="convertButton">Convert</button>
+
+      <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+style.css
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+input[type="number"] {
+  padding: 10px;
+  margin: 10px 0;
+  width: 80%;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 1.5em;
+}
+document.getElementById("convertButton").addEventListener("click", function () {
+  const temperatureInput = document.getElementById("temperatureInput").value;
+  const unit = document.querySelector('input[name="unit"]:checked').value;
+  const resultDiv = document.getElementById("result");
+
+  // Validate input
+  if (isNaN(temperatureInput) || temperatureInput === "") {
+    resultDiv.innerHTML = "Please enter a valid number.";
+    return;
+  }
+
+  let convertedTemperature;
+  let convertedUnit;
+
+  // Conversion logic
+  switch (unit) {
+    case "Celsius":
+      convertedTemperature = (temperatureInput * 9) / 5 + 32; // Celsius to Fahrenheit
+      convertedUnit = "Fahrenheit";
+      break;
+    case "Fahrenheit":
+      convertedTemperature = ((temperatureInput - 32) * 5) / 9; // Fahrenheit to Celsius
+      convertedUnit = "Celsius";
+      break;
+    case "Kelvin":
+      // Convert Kelvin to Celsius first
+      const celsiusFromKelvin = temperatureInput - 273.15;
+      convertedTemperature = (celsiusFromKelvin * 9) / 5 + 32; // Celsius to Fahrenheit
+      convertedUnit = "Fahrenheit";
+      break;
+  }
+
+  // Display result
+  resultDiv.innerHTML = `Converted Temperature: ${convertedTemperature.toFixed(
+    2
+  )} °${convertedUnit.charAt(0)}`;
+});
